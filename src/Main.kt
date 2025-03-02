@@ -19,7 +19,7 @@ fun main() {
     println()
 
     // Create a list to store monkey names
-    val monkeys = null  // FIXME!
+    val monkeys = mutableListOf<String>()
 
     // Add in some test monkeys
     monkeys.add("Dave")
@@ -77,7 +77,7 @@ fun main() {
     println("Longest Name: ${longestMonkeyName(monkeys)}")
 
     // Check the list
-    check(monkeys.count() == 0)
+    check(monkeys.count() == 4)
     check(monkeyCounter(monkeys) == "There are 4 monkeys!")
 
     // Try to delete 10 monkeys
@@ -91,7 +91,7 @@ fun main() {
     println("Longest Name: ${longestMonkeyName(monkeys)}")
 
     // Check the list
-    check(monkeys.count() == 4)
+    check(monkeys.count() == 0)
     check(monkeyCounter(monkeys) == "There are no monkeys!")
 }
 
@@ -106,11 +106,15 @@ fun main() {
  * etc.
  */
 fun showMonkeys(monkeyList: List<String>) {
-    println("Monkey List")
+    println("\nMonkey List")
     println("-------------------")
 
     // Loop through the given list and show each monkey
-    check(false)   // FIXME: Remove this line and add your code
+    monkeyList.forEachIndexed { monkey, name ->
+        println("$name: $monkey")
+    }
+    if (monkeyList.isEmpty()) println("There are no monkeys to list!")
+    println()
 }
 
 
@@ -120,11 +124,20 @@ fun showMonkeys(monkeyList: List<String>) {
  */
 fun getNewMonkey(monkeyList: MutableList<String>) {
     // Ask the user for a monkey name (no blanks)
+    var input: String
+
+    print("Enter New Monkey: ")
+    while (true) {
+        input = readln()
+        if (input.isNotEmpty()) break
+        println("Please enter a name that is not blank!")
+    }
 
     // Add the name to the list
+    monkeyList.add(input)
 
     // Show some feedback
-    println("Added new monkey: NAME HERE")
+    println("Added new monkey: $input")
 }
 
 
@@ -137,16 +150,20 @@ fun getNewMonkey(monkeyList: MutableList<String>) {
  */
 fun monkeyCounter(monkeyList: List<String>): String {
     // return the number of monkeys in the list
-    return "MONKEY COUNT MESSAGE"   // FIXME!
+    val numMonkeys = monkeyList.size
+    if (numMonkeys == 0) return "There are no monkeys!"
+    return "There are $numMonkeys monkeys!"
 }
 
 
 /**
  * Returns the name of the monkey
+ * If lengths match, return the lowest index
  */
 fun longestMonkeyName(monkeyList: List<String>): String {
+    if (monkeyList.isEmpty()) return "There are no monkeys!"
     // Loop through the list and find the longest name
-    return "MONKEY NAME HERE"   // FIXME!
+    return monkeyList.maxBy { it.length }
 }
 
 
@@ -155,10 +172,11 @@ fun longestMonkeyName(monkeyList: List<String>): String {
  * if the list is not empty
  */
 fun deleteFirstMonkey(monkeyList: MutableList<String>) {
-    // Remove the first one from the list
-
+    if (monkeyList.isEmpty()) return
     // Show some feedback
-    println("Removing monkey: NAME HERE")
+    println("Removing monkey: ${monkeyList[0]}")
+    // Remove the first one from the list
+    monkeyList.removeAt(0)
 }
 
 
@@ -167,9 +185,10 @@ fun deleteFirstMonkey(monkeyList: MutableList<String>) {
  * if the list is not empty
  */
 fun deleteLastMonkey(monkeyList: MutableList<String>) {
-    // Remove the last one from the list
-
     // Show some feedback
-    println("Removing monkey: NAME HERE")
+    println("Removing monkey: ${monkeyList[monkeyList.lastIndex]}")
+
+    // Remove the last one from the list
+    monkeyList.removeAt(monkeyList.lastIndex)
 }
 
